@@ -21,15 +21,25 @@ pipeline {
                 sh 'mvn integration-test'
             }
         } 
-        stage ('Deploy too QA') {
+        stage ('Deploy to QA') {
             steps {
-                sh 'kubectl apply -f qa-deployment.ymal'
+                sh 'kubectl apply -f qa-deployment.yaml'
             }
         }
-        stage ('')
-        stage ('deploy'){
+        stage ('Smoke Test') {
             steps {
-                echo "deploy to Kubernetes"
+                sh 'bash smoke_test.sh'
+            }
+        }
+        stage ('Deploy to Production') {
+            steps {
+                input 'proceed with deployment to Production'
+                sh 'kubectl apply -f production-deployment.yaml'
+            }
+        }
+        stage ('Cleanup'){
+            steps {
+                sh 'mvn clean'
             }
         }
     }
