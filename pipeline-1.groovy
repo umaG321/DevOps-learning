@@ -33,7 +33,7 @@ pipeline {
         }
         stage ('Deploy to Production') {
             steps {
-                input 'proceed with deployment to Production'
+                input 'proceed with deployment to Production?'
                 sh 'kubectl apply -f production-deployment.yaml'
             }
         }
@@ -44,4 +44,4 @@ pipeline {
         }
     }
 }
-# just to test the weebhook
+
